@@ -16,7 +16,7 @@ class AwesomeProject extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Hello World!</Text>
+        <Text>not implemented for Android yet!</Text>
       </View>
     );
   }
