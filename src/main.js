@@ -11,7 +11,7 @@ import {
   Button
 } from 'react-native-button';
 import { default as Sound } from 'react-native-sound';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 Sound.enableInSilenceMode(true);
 
@@ -50,7 +50,8 @@ class MusicGameApp extends Component {
       note: null,
       mysteryNote: null,
       guesses: 0,
-      successes: 0
+      successes: 0,
+      streak: 0
     };
   }
 
@@ -67,7 +68,8 @@ class MusicGameApp extends Component {
       note: null,
       mysteryNote: null,
       guesses: 0,
-      successes: 0
+      successes: 0,
+      streak: 0
     });
   }
 
@@ -80,11 +82,13 @@ class MusicGameApp extends Component {
       this.setState({
         mysteryNote: null,
         guesses: this.state.guesses + 1,
-        successes: this.state.successes + 1
+        successes: this.state.successes + 1,
+        streak: this.state.streak + 1
       });
     } else if (this.state.mysteryNote) {
       this.setState({
-        guesses: this.state.guesses + 1
+        guesses: this.state.guesses + 1,
+        streak: 0
       });
     }
     this.playNote(note);
@@ -115,8 +119,18 @@ class MusicGameApp extends Component {
   render() {
     return (
       <View style={{flex: 1}}>
-        <View style={{flex: 1, backgroundColor: 'powderblue', justifyContent:'center', flexDirection: "column"}}>
-          <Text style={{fontSize: 20, fontWeight: 'bold', textAlign: 'center'}}>Buck's music game!</Text>
+        <View style={
+          {
+            flex: 1,
+            backgroundColor: 'powderblue',
+            justifyContent:'center',
+            flexDirection: "row",
+            alignItems: 'flex-end',
+            justifyContent: 'space-between',
+          }}>
+          <Icon name="navicon" size={30}/>
+          <Text style={styles.title}>Buck's music game!</Text>
+          <Icon name="gear" size={30} />
         </View>
         <View style={{flex: 2, backgroundColor: 'skyblue', flexDirection: "row"}}>
             {this.state.mysteryNote ?
@@ -136,16 +150,25 @@ class MusicGameApp extends Component {
               </TouchableHighlight>
             }
           <View style={{flexDirection: "column", flex: 1, justifyContent:'center', alignItems: 'stretch'}} >
+            <TouchableHighlight style={{alignItems: 'center'}} onPress={(e) => this.handleReset()}>
+              <Text style={styles.text20}>Reset!</Text>
+            </TouchableHighlight>
             <Text style={styles.text20}>Guesses: {this.state.guesses}</Text>
             <Text style={styles.text20}>Successes: {this.state.successes}</Text>
             <Text style={styles.text20}>Accuracy: {this.state.successes / this.state.guesses * 100 | 0}%</Text>
-            <TouchableHighlight onPress={(e) => this.handleReset()}>
-              <Text style={styles.text20}>Reset!</Text>
-            </TouchableHighlight>
+            <Text style={styles.text20}>Streak: {this.state.streak}</Text>
           </View>
 
         </View>
-        <View style={{flex: 7, backgroundColor: 'steelblue', flexDirection: 'column', alignItems: 'stretch', justifyContent: 'center'}}>
+        <View style={
+          {
+            flex: 7,
+            backgroundColor: 'steelblue',
+            flexDirection: 'column',
+            alignItems: 'stretch',
+            borderWidth: 2,
+            justifyContent: 'center'
+          }}>
           {[...Array(this.numberOfOctaves * 2)].map((x, idx) =>
             <Row key={idx} rowNum={idx} handlePressButton={(a,b) => this._onPressButton(a,b)}/>
           )}
@@ -192,7 +215,14 @@ class Key extends Component {
       <TouchableHighlight
         key={this.props.idx}
         onPress={(e) => this.props.handlePressButton(e, this.noteName())}
-        style={{borderWidth: 2, backgroundColor: this.color(), flexDirection: 'column', flex: 1}}>
+        style={
+          {
+            borderWidth: 1,
+            backgroundColor: this.color(),
+            flexDirection: 'row',
+            flex: 1,
+            alignItems: 'center'
+          }}>
         <Text style={styles.text20}>
           {this.noteName()}
         </Text>
@@ -202,12 +232,20 @@ class Key extends Component {
 }
 
 const styles = StyleSheet.create({
-  text20: {flex: 1, fontSize: 20, fontWeight: 'bold', textAlign: 'center'},
+  text15: {flex: 1, fontSize: 15, fontWeight: 'bold', textAlign: 'center'},
+  text20: {flex: 1, fontSize: 20, fontWeight: 'bold', textAlign: 'center', justifyContent: 'center'},
   row: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'stretch',
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });
 
