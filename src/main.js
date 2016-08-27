@@ -51,7 +51,8 @@ class MusicGameApp extends Component {
       mysteryNote: null,
       guesses: 0,
       successes: 0,
-      streak: 0
+      streak: 0,
+      showingMenu: false
     };
   }
 
@@ -116,49 +117,38 @@ class MusicGameApp extends Component {
     notes[note].play();
   }
 
-  render() {
+  renderMainScreen () {
     return (
       <View style={{flex: 1}}>
         <View style={
-          {
-            flex: 1,
-            backgroundColor: 'powderblue',
-            justifyContent:'center',
-            flexDirection: "row",
-            alignItems: 'flex-end',
-            justifyContent: 'space-between',
-          }}>
-          <Icon name="navicon" size={30}/>
-          <Text style={styles.title}>Buck's music game!</Text>
-          <Icon name="gear" size={30} />
-        </View>
-        <View style={{flex: 2, backgroundColor: 'skyblue', flexDirection: "row"}}>
+              {
+                flex: 1,
+                justifyContent:'center',
+                flexDirection: "row",
+                alignItems: 'flex-end',
+                justifyContent: 'space-between',
+              }}>
+              <View style={{width: 30, alignItems: 'flex-end', flex: 0}}>
+                <TouchableHighlight onPress={(e) => this.setState({showingMenu: true})} >
+                  <Icon name="navicon" size={30} />
+                </TouchableHighlight>
+              </View>
+              <Text style={[styles.text20, {flex: 2}]}>{this.state.successes / this.state.guesses * 100 | 0}%
+              ({this.state.successes}/{this.state.guesses}), streak {this.state.streak}</Text>
+            </View>
+        <View style={{flex: 1, flexDirection: "row"}}>
             {this.state.mysteryNote ?
               <TouchableHighlight onPress={(e) => this.handleReplayNote()} style={{
                 flexDirection: "column",
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'stretch'}}>
-                <Text style={{fontSize: 30, fontWeight: 'bold', textAlign: 'center'}}>Replay</Text>
+                <Text style={styles.bigButtonText}>Replay</Text>
               </TouchableHighlight> :
-              <TouchableHighlight onPress={(e) => this.handleGetNewNote()} style={{
-                flexDirection: "column",
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'stretch'}}>
-                <Text style={{fontSize: 30, fontWeight: 'bold', textAlign: 'center'}}>Get new note</Text>
+              <TouchableHighlight onPress={(e) => this.handleGetNewNote()} style={styles.bigButton}>
+                <Text style={styles.bigButtonText}>Get new note</Text>
               </TouchableHighlight>
             }
-          <View style={{flexDirection: "column", flex: 1, justifyContent:'center', alignItems: 'stretch'}} >
-            <TouchableHighlight style={{alignItems: 'center'}} onPress={(e) => this.handleReset()}>
-              <Text style={styles.text20}>Reset!</Text>
-            </TouchableHighlight>
-            <Text style={styles.text20}>Guesses: {this.state.guesses}</Text>
-            <Text style={styles.text20}>Successes: {this.state.successes}</Text>
-            <Text style={styles.text20}>Accuracy: {this.state.successes / this.state.guesses * 100 | 0}%</Text>
-            <Text style={styles.text20}>Streak: {this.state.streak}</Text>
-          </View>
-
         </View>
         <View style={
           {
@@ -175,6 +165,18 @@ class MusicGameApp extends Component {
         </View>
       </View>
     );
+  }
+
+  renderMenu() {
+    return <View><Text>lol</Text></View>;
+  }
+
+  render() {
+    if (this.state.showingMenu) {
+      return this.renderMenu();
+    } else {
+      return this.renderMainScreen();
+    }
   }
 }
 
@@ -232,8 +234,19 @@ class Key extends Component {
 }
 
 const styles = StyleSheet.create({
-  text15: {flex: 1, fontSize: 15, fontWeight: 'bold', textAlign: 'center'},
-  text20: {flex: 1, fontSize: 20, fontWeight: 'bold', textAlign: 'center', justifyContent: 'center'},
+  text15: {
+    flex: 1,
+    fontSize: 15,
+    textAlign: 'center',
+    fontFamily: "helvetica"
+  },
+  text20: {
+    flex: 1,
+    fontSize: 20,
+    textAlign: 'center',
+    justifyContent: 'center',
+    fontFamily: "helvetica"
+  },
   row: {
     flex: 1,
     flexDirection: 'row',
@@ -245,7 +258,20 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    fontFamily: "helvetica"
+  },
+  bigButtonText: {
+    fontSize: 30,
+    // fontWeight: 'bold',
+    textAlign: 'center',
+    fontFamily: "helvetica"
+  },
+  bigButton: {
+    flexDirection: "column",
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'stretch'
   }
 });
 
