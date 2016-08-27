@@ -13,6 +13,21 @@ import {
 import { default as Sound } from 'react-native-sound';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+var Auth0Lock = require('react-native-lock');
+var lock = new Auth0Lock({clientId: '51AxJAlYtMsLYAJlcct8d87yafrGA9Kb', domain: 'bshlgrs.auth0.com'});
+
+// import * as firebase from 'firebase';
+
+// var config = {
+//   apiKey: "AIzaSyBnxm_Z5FpZT6dqc3kuPdezRnRzgSTXr8A",
+//   authDomain: "relativepitchapp.firebaseapp.com",
+//   databaseURL: "https://relativepitchapp.firebaseio.com",
+//   storageBucket: "relativepitchapp.appspot.com",
+// };
+
+// const firebaseApp = firebase.initializeApp(config);
+
+
 Sound.enableInSilenceMode(true);
 
 const noteNames = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"];
@@ -39,8 +54,6 @@ function loadAllSounds (numberOfOctaves) {
   });
 }
 
-loadAllSounds();
-
 class MusicGameApp extends Component {
   constructor(props) {
     super(props);
@@ -54,6 +67,10 @@ class MusicGameApp extends Component {
       streak: 0,
       showingMenu: false
     };
+  }
+
+  componentDidMount() {
+    loadAllSounds();
   }
 
   getRandomNote() {
@@ -168,7 +185,17 @@ class MusicGameApp extends Component {
   }
 
   renderMenu() {
-    return <View><Text>lol</Text></View>;
+    return (
+      <View style={{flex: 1}}>
+        <View style={{flex: 1}}/>
+        <View style={{flex: 5}}>
+          <TouchableHighlight onPress={(e) => this.setState({showingMenu: false})} >
+            <Text>Return!</Text>
+          </TouchableHighlight>
+          <Text>lol</Text>
+        </View>
+      </View>)
+    ;
   }
 
   render() {
