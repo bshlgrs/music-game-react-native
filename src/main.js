@@ -152,7 +152,7 @@ class MusicGameApp extends Component {
               </View>
               <Text style={[styles.text20, {flex: 2}]}>{this.state.successes / this.state.guesses * 100 | 0}%
               ({this.state.successes}/{this.state.guesses}), streak {this.state.streak}</Text>
-            </View>
+        </View>
         <View style={{flex: 1, flexDirection: "row"}}>
             {this.state.mysteryNote ?
               <TouchableHighlight onPress={(e) => this.handleReplayNote()} style={{
@@ -170,7 +170,6 @@ class MusicGameApp extends Component {
         <View style={
           {
             flex: 7,
-            backgroundColor: 'steelblue',
             flexDirection: 'column',
             alignItems: 'stretch',
             borderWidth: 2,
@@ -187,15 +186,33 @@ class MusicGameApp extends Component {
   renderMenu() {
     return (
       <View style={{flex: 1}}>
-        <View style={{flex: 1}}/>
-        <View style={{flex: 5}}>
-          <TouchableHighlight onPress={(e) => this.setState({showingMenu: false})} >
-            <Text>Return!</Text>
-          </TouchableHighlight>
-          <Text>lol</Text>
+        <View style={
+              {
+                flex: 1,
+                justifyContent:'center',
+                flexDirection: "row",
+                alignItems: 'flex-end',
+                justifyContent: 'space-between',
+              }}>
+              <View style={{width: 30, alignItems: 'flex-end', flex: 0}}>
+                <TouchableHighlight onPress={(e) => this.setState({showingMenu: false})} >
+                  <Icon name="navicon" size={30} />
+                </TouchableHighlight>
+              </View>
+              <Text style={[styles.text20, {flex: 2}]}>Settings</Text>
         </View>
-      </View>)
-    ;
+
+        <View style={
+          {
+            flex: 8,
+            flexDirection: 'column',
+            alignItems: 'stretch',
+            justifyContent: 'center'
+          }}>
+
+        </View>
+      </View>
+    );
   }
 
   render() {
