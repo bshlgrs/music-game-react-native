@@ -13,18 +13,6 @@ import {
 import { default as Sound } from 'react-native-sound';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-// import * as firebase from 'firebase';
-
-// var config = {
-//   apiKey: "AIzaSyBnxm_Z5FpZT6dqc3kuPdezRnRzgSTXr8A",
-//   authDomain: "relativepitchapp.firebaseapp.com",
-//   databaseURL: "https://relativepitchapp.firebaseio.com",
-//   storageBucket: "relativepitchapp.appspot.com",
-// };
-
-// const firebaseApp = firebase.initializeApp(config);
-
-
 Sound.enableInSilenceMode(true);
 
 const fileNoteNames = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"];
