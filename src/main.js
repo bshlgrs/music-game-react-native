@@ -13,9 +13,6 @@ import {
 import { default as Sound } from 'react-native-sound';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-var Auth0Lock = require('react-native-lock');
-var lock = new Auth0Lock({clientId: '51AxJAlYtMsLYAJlcct8d87yafrGA9Kb', domain: 'bshlgrs.auth0.com'});
-
 // import * as firebase from 'firebase';
 
 // var config = {
