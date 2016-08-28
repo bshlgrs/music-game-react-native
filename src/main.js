@@ -27,7 +27,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 Sound.enableInSilenceMode(true);
 
-const noteNames = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"];
+const fileNoteNames = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"];
+const readableNoteNames = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"];
 
 const notes = {};
 
@@ -35,7 +36,7 @@ function loadAllSounds (numberOfOctaves) {
   var path = 'acoustic_grand_piano-mp3/A2.mp3';
 
   [2, 3, 4, 5].forEach((octave) => {
-    noteNames.forEach((noteName) => {
+    fileNoteNames.forEach((noteName) => {
       var path = 'acoustic_grand_piano-mp3/' + noteName + octave + '.mp3';
 
       var note = new Sound(path, Sound.MAIN_BUNDLE, (error) => {
@@ -62,7 +63,8 @@ class MusicGameApp extends Component {
       guesses: 0,
       successes: 0,
       streak: 0,
-      showingMenu: false
+      showingMenu: false,
+      bestStreak: 0
     };
   }
 
@@ -73,7 +75,7 @@ class MusicGameApp extends Component {
   getRandomNote() {
     var num = Math.random() * (this.numberOfOctaves * 12) | 0;
     octave = (num / 12 | 0) + 2;
-    noteName = noteNames[num % 12];
+    noteName = fileNoteNames[num % 12];
 
     return noteName + octave;
   }
@@ -84,7 +86,8 @@ class MusicGameApp extends Component {
       mysteryNote: null,
       guesses: 0,
       successes: 0,
-      streak: 0
+      streak: 0,
+      bestStreak: 0
     });
   }
 
@@ -98,7 +101,8 @@ class MusicGameApp extends Component {
         mysteryNote: null,
         guesses: this.state.guesses + 1,
         successes: this.state.successes + 1,
-        streak: this.state.streak + 1
+        streak: this.state.streak + 1,
+        bestStreak: Math.max(this.state.streak + 1, this.state.bestStreak)
       });
     } else if (this.state.mysteryNote) {
       this.setState({
@@ -148,7 +152,7 @@ class MusicGameApp extends Component {
                 </TouchableHighlight>
               </View>
               <Text style={[styles.text20, {flex: 2}]}>{this.state.successes / this.state.guesses * 100 | 0}%
-              ({this.state.successes}/{this.state.guesses}), streak {this.state.streak}</Text>
+               ({this.state.successes}/{this.state.guesses}), streak {this.state.streak}, best streak {this.state.bestStreak}</Text>
         </View>
         <View style={{flex: 1, flexDirection: "row"}}>
             {this.state.mysteryNote ?
@@ -180,7 +184,7 @@ class MusicGameApp extends Component {
     );
   }
 
-  renderMenu() {
+  renderSettingsScreen() {
     return (
       <View style={{flex: 1}}>
         <View style={
@@ -207,6 +211,9 @@ class MusicGameApp extends Component {
             justifyContent: 'center'
           }}>
 
+          <TouchableHighlight onPress={(e) => this.handleReset()}>
+            <Text>Reset</Text>
+          </TouchableHighlight>
         </View>
       </View>
     );
@@ -214,7 +221,7 @@ class MusicGameApp extends Component {
 
   render() {
     if (this.state.showingMenu) {
-      return this.renderMenu();
+      return this.renderSettingsScreen();
     } else {
       return this.renderMainScreen();
     }
@@ -240,7 +247,14 @@ class Key extends Component {
 
   noteName () {
     octave = (this.props.rowNum / 2 | 0) + 2;
-    noteName = noteNames[(this.props.rowNum % 2) * 6 + this.props.idx];
+    noteName = fileNoteNames[(this.props.rowNum % 2) * 6 + this.props.idx];
+
+    return noteName + octave;
+  }
+
+  readableNoteName () {
+    octave = (this.props.rowNum / 2 | 0) + 2;
+    noteName = readableNoteNames[(this.props.rowNum % 2) * 6 + this.props.idx];
 
     return noteName + octave;
   }
@@ -267,7 +281,7 @@ class Key extends Component {
             alignItems: 'center'
           }}>
         <Text style={styles.text20}>
-          {this.noteName()}
+          {this.readableNoteName()}
         </Text>
       </TouchableHighlight>
     );
